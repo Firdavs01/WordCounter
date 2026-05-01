@@ -2,6 +2,7 @@
 
 const input = document.querySelector("#enterTextInp");
 const button = document.querySelector("#click");
+const container = document.querySelector("#container")
 
 let wordCount = new Map();
 
