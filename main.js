@@ -7,10 +7,10 @@ const container = document.querySelector("#container")
 let wordCount = new Map();
 
 button.addEventListener("click", () => {
+    container.innerHTML = ''
     const word = input.value.toLowerCase().trim()
 
     if (word === '') return
-    let result = ''
 
     if (wordCount.has(word)) {
         wordCount.set(word, wordCount.get(word) +  1)
@@ -19,8 +19,14 @@ button.addEventListener("click", () => {
     }
 
     wordCount.forEach((count, word) => {
-        result += `${word}: ${count}\n`
+        const li = document.createElement('li')
+        li.textContent = `${word}: ${count}\n`
+        container.appendChild(li)
     })
+})
 
-    console.log(wordCount)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        button.click()
+    }
 })
