@@ -1,32 +1,48 @@
-"use strict";
+    "use strict";
 
-const input = document.querySelector("#enterTextInp");
-const button = document.querySelector("#click");
-const container = document.querySelector("#container")
+    const input = document.querySelector("#enterTextInp");
+    const button = document.querySelector("#click");
+    const container = document.querySelector("#container")
 
-let wordCount = new Map();
+    let wordCount = new Map();
 
-button.addEventListener("click", () => {
-    container.innerHTML = ''
-    const word = input.value.toLowerCase().trim()
+    const savedData = localStorage.getItem('data')
 
-    if (word === '') return
+    if (savedData) {
+        const parseData = JSON.parse(savedData)
 
-    if (wordCount.has(word)) {
-        wordCount.set(word, wordCount.get(word) +  1)
-    } else {
-        wordCount.set(word, 1)
+        renderList()
     }
 
-    wordCount.forEach((count, word) => {
+    button.addEventListener("click", () => {
+        const word = input.value.toLowerCase().trim()
+        
+        if (word === '') return
+        
+        if (wordCount.has(word)) {
+            wordCount.set(word, wordCount.get(word) +  1)
+        } else {
+            wordCount.set(word, 1)
+        }
+
+        localStorage.setItem('data', JSON.stringify([...wordCount]))
+
+        renderList()
+        input.value = '';
+    })
+
+    function renderList() {
+        container.innerHTML = '';
+
+        wordCount.forEach((count, word) => {
         const li = document.createElement('li')
         li.textContent = `${word}: ${count}\n`
         container.appendChild(li)
-    })
-})
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        button.click()
+        })  
     }
-})
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            button.click()
+        }
+    })
